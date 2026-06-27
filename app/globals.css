@@ -1,26 +1,205 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 9 9 11;
+    --foreground: 250 250 250;
+    --card: 17 17 21;
+    --card-border: 39 39 47;
+    --primary: 99 102 241;
+    --primary-glow: 99 102 241;
+    --accent-green: 34 197 94;
+    --accent-red: 239 68 68;
+    --accent-yellow: 234 179 8;
+    --muted: 113 113 122;
+    --invest-color: 34 197 94;
+    --pass-color: 239 68 68;
+    --watch-color: 234 179 8;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Glass morphism cards */
+  .glass-card {
+    background: rgba(17, 17, 21, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+  }
+
+  .glass-card-hover {
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .glass-card-hover:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-primary {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Verdict colors */
+  .verdict-invest {
+    color: rgb(34, 197, 94);
+    border-color: rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.08);
+  }
+
+  .verdict-pass {
+    color: rgb(239, 68, 68);
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  .verdict-watch {
+    color: rgb(234, 179, 8);
+    border-color: rgba(234, 179, 8, 0.3);
+    background: rgba(234, 179, 8, 0.08);
+  }
+
+  /* Animated glow */
+  .glow-invest {
+    box-shadow: 0 0 24px rgba(34, 197, 94, 0.2), 0 0 48px rgba(34, 197, 94, 0.08);
+  }
+
+  .glow-pass {
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.2), 0 0 48px rgba(239, 68, 68, 0.08);
+  }
+
+  .glow-watch {
+    box-shadow: 0 0 24px rgba(234, 179, 8, 0.2), 0 0 48px rgba(234, 179, 8, 0.08);
+  }
+
+  /* Shimmer loading animation */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+  }
+
+  /* Pulse animation for active steps */
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .pulse-ring::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    animation: pulse-ring 1.2s ease-out infinite;
+  }
+
+  /* Grid background pattern */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(9, 9, 11);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Step status indicators */
+  .step-running {
+    color: rgb(99, 102, 241);
+  }
+  .step-done {
+    color: rgb(34, 197, 94);
+  }
+  .step-error {
+    color: rgb(239, 68, 68);
+  }
+  .step-pending {
+    color: rgb(113, 113, 122);
+  }
+
+  /* Metric card */
+  .metric-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px;
+    transition: background 0.2s;
+  }
+
+  .metric-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* News sentiment badges */
+  .badge-positive {
+    background: rgba(34, 197, 94, 0.15);
+    color: rgb(74, 222, 128);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+  .badge-negative {
+    background: rgba(239, 68, 68, 0.15);
+    color: rgb(248, 113, 113);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  .badge-neutral {
+    background: rgba(234, 179, 8, 0.15);
+    color: rgb(250, 204, 21);
+    border: 1px solid rgba(234, 179, 8, 0.3);
+  }
 }
